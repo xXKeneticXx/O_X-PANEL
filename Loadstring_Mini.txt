@@ -20,4 +20,39 @@ function O:isVisible()return self.mainFrame.Visible end
 function O:setParent(p)self.mainFrame.Parent=p end
 function O:destroy()if self.mainFrame then self.mainFrame:Destroy()end end
 function O:getMainFrame()return self.mainFrame end
-local P=game:GetService("Players")local p=P.LocalPlayer local pg=p:WaitForChild("PlayerGui")local pan=O.new("O-X PANEL v1.0",{width=350,height=500,position=UDim2.new(0.5,-175,0.5,-250),draggable=true,showCloseButton=true,showMinimizeButton=true})pan:setParent(pg)pan:addLabel("═════════════════════════════════════")pan:addLabel("Welcome to O-X Panel!")pan:addLabel("Red and Black Professional Theme")pan:addLabel("═════════════════════════════════════")pan:addButton("Execute Action",function()print("[O-X Panel] Action executed!")end)pan:addButton("Toggle Feature",function()print("[O-X Panel] Feature toggled!")end)pan:addButton("Settings",function()print("[O-X Panel] Opening settings...")end)pan:addLabel("─────────────────────────────────────")pan:addLabel("Status: Online")pan:addLabel("Version: 1.0")pan:addTextBox("Enter command...",function(t,e)if e then print("[O-X Panel] Command: "..t)end end)pan:addButton("Advanced Control",function()print("[O-X Panel] Advanced control activated")end)print("[O-X Panel] Loadstring executed successfully!")print("[O-X Panel] Panel is live and ready!")
+-- Ensure LocalPlayer is available (works if executed in slightly different client contexts)
+local P=game:GetService("Players")
+local p = P.LocalPlayer or P.PlayerAdded:Wait()
+if not p then
+	warn("[O-X Panel] LocalPlayer not found; aborting.")
+	return
+end
+local pg = p:FindFirstChild("PlayerGui") or p:WaitForChild("PlayerGui")
+if not pg then
+	warn("[O-X Panel] PlayerGui not found; aborting.")
+	return
+end
+print("[O-X Panel] Detected player:", p.Name)
+
+-- Create ScreenGui parent
+local sg=Instance.new("ScreenGui")
+sg.Name="OXPanelGui"
+sg.ResetOnSpawn=false
+sg.Parent=pg
+
+local pan=O.new("O-X PANEL v1.0",{width=350,height=500,position=UDim2.new(0.5,-175,0.5,-250),draggable=true,showCloseButton=true,showMinimizeButton=true})
+pan:setParent(sg)
+pan:addLabel("═════════════════════════════════════")
+pan:addLabel("Welcome to O-X Panel!")
+pan:addLabel("Red and Black Professional Theme")
+pan:addLabel("═════════════════════════════════════")
+pan:addButton("Execute Action",function()print("[O-X Panel] Action executed!")end)
+pan:addButton("Toggle Feature",function()print("[O-X Panel] Feature toggled!")end)
+pan:addButton("Settings",function()print("[O-X Panel] Opening settings...")end)
+pan:addLabel("─────────────────────────────────────")
+pan:addLabel("Status: Online")
+pan:addLabel("Version: 1.0")
+pan:addTextBox("Enter command...",function(t,e)if e then print("[O-X Panel] Command: "..t)end end)
+pan:addButton("Advanced Control",function()print("[O-X Panel] Advanced control activated")end)
+print("[O-X Panel] Loadstring executed successfully!")
+print("[O-X Panel] Panel is live and ready!")
